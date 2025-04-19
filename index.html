@@ -14,34 +14,31 @@
 
   <main>
     <button class="add-book">Add book</button>
-    <div class="container">
-
-      <div class="card">
-        <p>Book Title</p>
-        <p>Author: Author Name</p>
-        <p>Pages: 300</p>
-        <button>Read</button>
-        <button>Remove</button>
-      </div>
-
-      <div class="card">
-        <p>Book Title</p>
-        <p>Author: Author Name</p>
-        <p>Pages: 300</p>
-        <button>Read</button>
-        <button>Remove</button>
-      </div>
-
-      <div class="card">
-        <p>Book Title</p>
-        <p>Author: Author Name</p>
-        <p>Pages: 300</p>
-        <button>Read</button>
-        <button>Remove</button>
-      </div>
-      
-    </div>
+    <div class="container"></div>
   </main>
+
+  <div class="modal hidden">
+    <form id="book-form">
+      <h2>Add a New Book</h2>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+      
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author" required>
+      
+      <label for="pages">Pages:</label>
+      <input type="number" id="pages" name="pages" required>
+      
+      <label for="read">Read:</label>
+      <select id="read" name="read">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      
+      <button type="submit">Add Book</button>
+      <button type="button" class="close-modal">Cancel</button>
+    </form>
+  </div>
 
   <script src="index.js"></script>
 </body>
