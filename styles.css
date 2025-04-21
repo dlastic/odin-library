@@ -79,3 +79,53 @@ button.add-book {
     }
   }
 }
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 60%;
+}
+
+.modal .close-modal {
+  background-color: #f44336;
+  color: white;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+}
+
+.modal button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
