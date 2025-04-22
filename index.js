@@ -12,6 +12,10 @@ function Book(title, author, pages, read, id) {
   this.id = id;
 }
 
+Book.prototype.toggleReadStatus = function() {
+  this.read = !this.read;
+};
+
 function addBookToLibrary(title, author, pages, read) {
   const id = crypto.randomUUID();
   const book = new Book(title, author, pages, read, id);
@@ -29,10 +33,22 @@ function displayBooks() {
       <h2>${book.title}</h2>
       <p>${book.author}</p>
       <p>${book.pages} pages</p>
-      <button>${book.read ? "Read" : "Not Read"}</button>      
+      <button class="toggle-read-button" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
       <button class="remove-button" data-id="${book.id}">Remove</button>
     `;
     bookList.appendChild(bookCard);
+  });
+
+  const toggleReadButtons = document.querySelectorAll(".toggle-read-button");
+  toggleReadButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const bookId = e.target.getAttribute("data-id");
+      const book = myLibrary.find((book) => book.id === bookId);
+      if (book) {
+        book.toggleReadStatus();
+        displayBooks();
+      }
+    });
   });
 
   const removeButtons = document.querySelectorAll(".remove-button");
