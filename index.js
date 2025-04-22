@@ -34,6 +34,23 @@ function displayBooks() {
     `;
     bookList.appendChild(bookCard);
   });
+
+  const removeButtons = document.querySelectorAll(".remove-button");
+  removeButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const bookId = e.target.getAttribute("data-id");
+      removeBookFromLibrary(bookId);
+    });
+  });
+}
+
+function removeBookFromLibrary(id) {
+  const bookIndex = myLibrary.findIndex((book) => book.id === id);
+
+  if (bookIndex !== -1) {
+    myLibrary.splice(bookIndex, 1);
+    displayBooks();
+  }
 }
 
 addBookButton.addEventListener("click", () => {
