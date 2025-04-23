@@ -31,10 +31,10 @@ function displayBooks() {
     const bookCard = document.createElement("div");
     bookCard.classList.add("card");
     bookCard.innerHTML = `
-      <h2>${book.title}</h2>
+      <h3>${book.title}</h3>
       <p>${book.author}</p>
       <p>${book.pages} pages</p>
-      <button class="toggle-read-button" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
+      <button class="toggle-read-button ${book.read ? "read" : "not-read"}" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
       <button class="remove-button" data-id="${book.id}">Remove</button>
     `;
     bookList.appendChild(bookCard);

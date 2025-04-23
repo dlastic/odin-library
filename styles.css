@@ -61,21 +61,31 @@ button.add-book {
     border-radius: 10px;
     padding: 20px;
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
   button {
+    margin-top: 5px;
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
+    width: 60%;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
       background-color: #0056b3;
+    }
+
+    &.toggle-read-button.not-read {
+      background-color: #f44336;
+    }
+
+    &.toggle-read-button.read {
+      background-color: #187714;
     }
   }
 }
@@ -142,4 +152,8 @@ form {
 
 .overlay.hidden {
   display: none;
+}
+
+input {
+  padding: 5px;
 }

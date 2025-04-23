@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Libary</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="stack-of-books.png" type="image/png">
 </head>
 <body>
   
@@ -19,20 +20,18 @@
 
   <div class="modal hidden">
     <form id="book-form">
-      <h2>Add new book</h2>
+      <h3>Add new book</h3>
       <input type="text" id="title" name="title" placeholder="Title" required>
-      
       <input type="text" id="author" name="author" placeholder="Author" required>
-      
       <input type="number" id="pages" name="pages" placeholder="Pages" required>
-      
-      <label for="read">Read:</label>
-      <select id="read" name="read">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-      
-      <button type="submit">Add Book</button>
+      <div>
+        <label for="read">Read:</label>
+        <select id="read" name="read">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <button type="submit">Add</button>
       <button type="button" class="close-modal">Cancel</button>
     </form>
   </div>
