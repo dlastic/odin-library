@@ -30,24 +30,41 @@ class Book {
 
   renderCard() {
     const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `
-      <h3>${this.title}</h3>
-      <p>${this.author}</p>
-      <p>${this.pages} pages</p>
-      <button class="toggle-read-button ${this.read ? "read" : "not-read"}">${
-      this.read ? "Read" : "Not Read"
-    }</button>
-      <button class="remove-button">Remove</button>
-    `;
+    const title = document.createElement("h3");
+    const author = document.createElement("p");
+    const pages = document.createElement("p");
+    const toggleButton = document.createElement("button");
+    const removeButton = document.createElement("button");
 
-    card.querySelector(".toggle-read-button").addEventListener("click", () => {
+    card.classList.add("card");
+    title.classList.add("title");
+    author.classList.add("author");
+    pages.classList.add("pages");
+    toggleButton.classList.add(
+      "toggle-read-button",
+      this.read ? "read" : "not-read"
+    );
+    removeButton.classList.add("remove-button");
+
+    title.textContent = this.title;
+    author.textContent = this.author;
+    pages.textContent = `${this.pages} pages`;
+    toggleButton.textContent = this.read ? "Read" : "Not Read";
+    removeButton.textContent = "Remove";
+
+    toggleButton.addEventListener("click", () => {
       this.toggleReadStatus();
     });
 
-    card.querySelector(".remove-button").addEventListener("click", () => {
+    removeButton.addEventListener("click", () => {
       this.removeFromLibrary();
     });
+
+    card.appendChild(title);
+    card.appendChild(author);
+    card.appendChild(pages);
+    card.appendChild(toggleButton);
+    card.appendChild(removeButton);
 
     return card;
   }
