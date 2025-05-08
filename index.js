@@ -5,17 +5,19 @@ const overlay = document.querySelector(".overlay");
 const closeModalButton = document.querySelector(".close-modal");
 const bookForm = document.querySelector("#book-form");
 
-function Book(title, author, pages, read, id) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.id = id;
-}
+class Book {
+  constructor(title, author, pages, read, id) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.id = id;
+  }
 
-Book.prototype.toggleReadStatus = function() {
-  this.read = !this.read;
-};
+  toggleReadStatus() {
+    this.read = !this.read;
+  }
+}
 
 function addBookToLibrary(title, author, pages, read) {
   const id = crypto.randomUUID();
@@ -25,7 +27,7 @@ function addBookToLibrary(title, author, pages, read) {
 
 function displayBooks() {
   const bookList = document.querySelector(".container");
-  bookList.innerHTML = "";  
+  bookList.innerHTML = "";
 
   myLibrary.forEach((book) => {
     const bookCard = document.createElement("div");
@@ -34,7 +36,9 @@ function displayBooks() {
       <h3>${book.title}</h3>
       <p>${book.author}</p>
       <p>${book.pages} pages</p>
-      <button class="toggle-read-button ${book.read ? "read" : "not-read"}" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
+      <button class="toggle-read-button ${
+        book.read ? "read" : "not-read"
+      }" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
       <button class="remove-button" data-id="${book.id}">Remove</button>
     `;
     bookList.appendChild(bookCard);
@@ -73,7 +77,7 @@ function removeBookFromLibrary(id) {
 addBookButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
-})
+});
 
 closeModalButton.addEventListener("click", () => {
   modal.classList.add("hidden");
