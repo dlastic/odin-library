@@ -16,6 +16,40 @@ class Book {
 
   toggleReadStatus() {
     this.read = !this.read;
+    displayBooks();
+  }
+
+  removeFromLibrary() {
+    const index = myLibrary.findIndex((book) => book.id === this.id);
+
+    if (index !== -1) {
+      myLibrary.splice(index, 1);
+      displayBooks();
+    }
+  }
+
+  renderCard() {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <h3>${this.title}</h3>
+      <p>${this.author}</p>
+      <p>${this.pages} pages</p>
+      <button class="toggle-read-button ${this.read ? "read" : "not-read"}">${
+      this.read ? "Read" : "Not Read"
+    }</button>
+      <button class="remove-button">Remove</button>
+    `;
+
+    card.querySelector(".toggle-read-button").addEventListener("click", () => {
+      this.toggleReadStatus();
+    });
+
+    card.querySelector(".remove-button").addEventListener("click", () => {
+      this.removeFromLibrary();
+    });
+
+    return card;
   }
 }
 
@@ -30,48 +64,9 @@ function displayBooks() {
   bookList.innerHTML = "";
 
   myLibrary.forEach((book) => {
-    const bookCard = document.createElement("div");
-    bookCard.classList.add("card");
-    bookCard.innerHTML = `
-      <h3>${book.title}</h3>
-      <p>${book.author}</p>
-      <p>${book.pages} pages</p>
-      <button class="toggle-read-button ${
-        book.read ? "read" : "not-read"
-      }" data-id="${book.id}">${book.read ? "Read" : "Not Read"}</button>
-      <button class="remove-button" data-id="${book.id}">Remove</button>
-    `;
-    bookList.appendChild(bookCard);
+    const card = book.renderCard();
+    bookList.appendChild(card);
   });
-
-  const toggleReadButtons = document.querySelectorAll(".toggle-read-button");
-  toggleReadButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const bookId = e.target.getAttribute("data-id");
-      const book = myLibrary.find((book) => book.id === bookId);
-      if (book) {
-        book.toggleReadStatus();
-        displayBooks();
-      }
-    });
-  });
-
-  const removeButtons = document.querySelectorAll(".remove-button");
-  removeButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const bookId = e.target.getAttribute("data-id");
-      removeBookFromLibrary(bookId);
-    });
-  });
-}
-
-function removeBookFromLibrary(id) {
-  const bookIndex = myLibrary.findIndex((book) => book.id === id);
-
-  if (bookIndex !== -1) {
-    myLibrary.splice(bookIndex, 1);
-    displayBooks();
-  }
 }
 
 addBookButton.addEventListener("click", () => {
