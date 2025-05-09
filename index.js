@@ -23,23 +23,8 @@ class Library {
     }
   }
 
-  displayBooks() {
-    const bookList = document.querySelector(".container");
-    bookList.innerHTML = "";
-
-    this.books.forEach((book) => {
-      const card = book.renderCard(
-        () => {
-          this.toggleReadStatusById(book.id);
-          this.displayBooks();
-        },
-        () => {
-          this.removeBookById(book.id);
-          this.displayBooks();
-        }
-      );
-      bookList.appendChild(card);
-    });
+  getBooks() {
+    return this.books;
   }
 }
 
@@ -80,8 +65,8 @@ class Book {
     toggleButton.textContent = this.read ? "Read" : "Not Read";
     removeButton.textContent = "Remove";
 
-    toggleButton.addEventListener("click", () => onToggleRead());
-    removeButton.addEventListener("click", () => onRemove());
+    toggleButton.addEventListener("click", onToggleRead);
+    removeButton.addEventListener("click", onRemove);
 
     card.appendChild(title);
     card.appendChild(author);
@@ -103,6 +88,7 @@ const LibraryUI = (() => {
   const authorInput = document.querySelector("#author");
   const pagesInput = document.querySelector("#pages");
   const readInput = document.querySelector("#read");
+  const bookList = document.querySelector(".container");
 
   const openModal = () => {
     modal.classList.remove("hidden");
@@ -123,9 +109,32 @@ const LibraryUI = (() => {
     const read = readInput.value === "true";
 
     myLibrary.addBook(title, author, pages, read);
-    myLibrary.displayBooks();
+    displayBooks();
     closeModal();
     bookForm.reset();
+  };
+
+  const handleRemoveBook = (id) => {
+    myLibrary.removeBookById(id);
+    displayBooks();
+  };
+
+  const handleToggleReadStatus = (id) => {
+    myLibrary.toggleReadStatusById(id);
+    displayBooks();
+  };
+
+  const displayBooks = () => {
+    const books = myLibrary.getBooks();
+    bookList.innerHTML = "";
+
+    books.forEach((book) => {
+      const card = book.renderCard(
+        () => handleToggleReadStatus(book.id),
+        () => handleRemoveBook(book.id)
+      );
+      bookList.appendChild(card);
+    });
   };
 
   const bindEvents = () => {
