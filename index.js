@@ -1,9 +1,53 @@
-const myLibrary = [];
 const addBookButton = document.querySelector(".add-book");
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const closeModalButton = document.querySelector(".close-modal");
 const bookForm = document.querySelector("#book-form");
+
+class Library {
+  constructor() {
+    this.books = [];
+  }
+
+  addBook(title, author, pages, read) {
+    const id = crypto.randomUUID();
+    const book = new Book(title, author, pages, read, id);
+    this.books.push(book);
+  }
+
+  removeBookById(id) {
+    const index = this.books.findIndex((book) => book.id === id);
+    if (index !== -1) {
+      this.books.splice(index, 1);
+    }
+  }
+
+  toggleReadStatusById(id) {
+    const book = this.books.find((book) => (book.id === id));
+    if (book) {
+      book.toggleReadStatus();
+    }
+  }
+
+  displayBooks() {
+    const bookList = document.querySelector(".container");
+    bookList.innerHTML = "";
+
+    this.books.forEach((book) => {
+      const card = book.renderCard(
+        () => {
+          this.toggleReadStatusById(book.id);
+          this.displayBooks();
+        },
+        () => {
+          this.removeBookById(book.id);
+          this.displayBooks();
+        }
+      );
+      bookList.appendChild(card);
+    });
+  }
+}
 
 class Book {
   constructor(title, author, pages, read, id) {
@@ -16,19 +60,9 @@ class Book {
 
   toggleReadStatus() {
     this.read = !this.read;
-    displayBooks();
   }
 
-  removeFromLibrary() {
-    const index = myLibrary.findIndex((book) => book.id === this.id);
-
-    if (index !== -1) {
-      myLibrary.splice(index, 1);
-      displayBooks();
-    }
-  }
-
-  renderCard() {
+  renderCard(onToggleRead, onRemove) {
     const card = document.createElement("div");
     const title = document.createElement("h3");
     const author = document.createElement("p");
@@ -52,13 +86,8 @@ class Book {
     toggleButton.textContent = this.read ? "Read" : "Not Read";
     removeButton.textContent = "Remove";
 
-    toggleButton.addEventListener("click", () => {
-      this.toggleReadStatus();
-    });
-
-    removeButton.addEventListener("click", () => {
-      this.removeFromLibrary();
-    });
+    toggleButton.addEventListener("click", () => onToggleRead());
+    removeButton.addEventListener("click", () => onRemove());
 
     card.appendChild(title);
     card.appendChild(author);
@@ -68,22 +97,6 @@ class Book {
 
     return card;
   }
-}
-
-function addBookToLibrary(title, author, pages, read) {
-  const id = crypto.randomUUID();
-  const book = new Book(title, author, pages, read, id);
-  myLibrary.push(book);
-}
-
-function displayBooks() {
-  const bookList = document.querySelector(".container");
-  bookList.innerHTML = "";
-
-  myLibrary.forEach((book) => {
-    const card = book.renderCard();
-    bookList.appendChild(card);
-  });
 }
 
 addBookButton.addEventListener("click", () => {
@@ -104,9 +117,11 @@ bookForm.addEventListener("submit", (e) => {
   const pages = parseInt(document.querySelector("#pages").value);
   const read = document.querySelector("#read").value === "true";
 
-  addBookToLibrary(title, author, pages, read);
-  displayBooks();
+  myLibrary.addBook(title, author, pages, read);
+  myLibrary.displayBooks();
   modal.classList.add("hidden");
   overlay.classList.add("hidden");
   bookForm.reset();
 });
+
+const myLibrary = new Library();
