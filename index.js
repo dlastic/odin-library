@@ -1,9 +1,3 @@
-const addBookButton = document.querySelector(".add-book");
-const modal = document.querySelector(".modal");
-const overlay = document.querySelector(".overlay");
-const closeModalButton = document.querySelector(".close-modal");
-const bookForm = document.querySelector("#book-form");
-
 class Library {
   constructor() {
     this.books = [];
@@ -23,7 +17,7 @@ class Library {
   }
 
   toggleReadStatusById(id) {
-    const book = this.books.find((book) => (book.id === id));
+    const book = this.books.find((book) => book.id === id);
     if (book) {
       book.toggleReadStatus();
     }
@@ -99,29 +93,51 @@ class Book {
   }
 }
 
-addBookButton.addEventListener("click", () => {
-  modal.classList.remove("hidden");
-  overlay.classList.remove("hidden");
-});
+const LibraryUI = (() => {
+  const addBookButton = document.querySelector(".add-book");
+  const modal = document.querySelector(".modal");
+  const overlay = document.querySelector(".overlay");
+  const closeModalButton = document.querySelector(".close-modal");
+  const bookForm = document.querySelector("#book-form");
+  const titleInput = document.querySelector("#title");
+  const authorInput = document.querySelector("#author");
+  const pagesInput = document.querySelector("#pages");
+  const readInput = document.querySelector("#read");
 
-closeModalButton.addEventListener("click", () => {
-  modal.classList.add("hidden");
-  overlay.classList.add("hidden");
-});
+  const openModal = () => {
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  };
 
-bookForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+  const closeModal = () => {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  };
 
-  const title = document.querySelector("#title").value;
-  const author = document.querySelector("#author").value;
-  const pages = parseInt(document.querySelector("#pages").value);
-  const read = document.querySelector("#read").value === "true";
+  const handleAddBook = (e) => {
+    e.preventDefault();
 
-  myLibrary.addBook(title, author, pages, read);
-  myLibrary.displayBooks();
-  modal.classList.add("hidden");
-  overlay.classList.add("hidden");
-  bookForm.reset();
-});
+    const title = titleInput.value;
+    const author = authorInput.value;
+    const pages = parseInt(pagesInput.value);
+    const read = readInput.value === "true";
+
+    myLibrary.addBook(title, author, pages, read);
+    myLibrary.displayBooks();
+    closeModal();
+    bookForm.reset();
+  };
+
+  const bindEvents = () => {
+    addBookButton.addEventListener("click", openModal);
+    closeModalButton.addEventListener("click", closeModal);
+    bookForm.addEventListener("submit", handleAddBook);
+  };
+
+  const init = () => bindEvents();
+
+  return { init };
+})();
 
 const myLibrary = new Library();
+LibraryUI.init();
