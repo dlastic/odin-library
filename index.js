@@ -98,13 +98,36 @@ const LibraryUI = (() => {
   const closeModal = () => {
     modal.classList.add("hidden");
     overlay.classList.add("hidden");
+    bookForm.reset();
+  };
+
+  const clearCustomValidity = (el) => {
+    el.setCustomValidity("");
   };
 
   const handleAddBook = (e) => {
     e.preventDefault();
 
-    const title = titleInput.value;
-    const author = authorInput.value;
+    if (!titleInput.value.trim()) {
+      titleInput.setCustomValidity("Title is required.");
+    }
+    if (!authorInput.value.trim()) {
+      authorInput.setCustomValidity("Author is required.");
+    }
+    if (
+      !pagesInput.value.trim() ||
+      isNaN(pagesInput.value) ||
+      pagesInput.value <= 0
+    ) {
+      pagesInput.setCustomValidity("Pages must be a positive number.");
+    }
+    if (!bookForm.checkValidity()) {
+      bookForm.reportValidity();
+      return;
+    }
+
+    const title = titleInput.value.trim();
+    const author = authorInput.value.trim();
     const pages = parseInt(pagesInput.value);
     const read = readInput.value === "true";
 
@@ -141,6 +164,11 @@ const LibraryUI = (() => {
     addBookButton.addEventListener("click", openModal);
     closeModalButton.addEventListener("click", closeModal);
     bookForm.addEventListener("submit", handleAddBook);
+    titleInput.addEventListener("input", () => clearCustomValidity(titleInput));
+    authorInput.addEventListener("input", () =>
+      clearCustomValidity(authorInput)
+    );
+    pagesInput.addEventListener("input", () => clearCustomValidity(pagesInput));
   };
 
   const init = () => bindEvents();
